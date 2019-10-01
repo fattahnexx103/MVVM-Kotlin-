@@ -6,10 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import apps.android.fattahnexx103.kotlinapp.model.ApiService
-import apps.android.fattahnexx103.kotlinapp.model.Data
-import apps.android.fattahnexx103.kotlinapp.model.ResultsItem
-import apps.android.fattahnexx103.kotlinapp.model.model
+import apps.android.fattahnexx103.kotlinapp.model.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -26,42 +23,70 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     //these have the observables which can be observed
 
     //lazy means system will not instantiate variable only when it is needed
-    val modelListObs by lazy{MutableLiveData <Data>()} //mutable live data means it can be changed and updated
+    val modelListObs by lazy{MutableLiveData <List<model>>()} //mutable live data means it can be changed and updated
     val loadErrorObs by lazy { MutableLiveData<Boolean>() } //this is set to true and false when error is detected and changed to true and false
     val loadingObs by lazy{ MutableLiveData<Boolean>()} //this is for the progressBar to be active and inactive
 
     private val disposable = CompositeDisposable() //this is for maintaing the disposable data
     private val apiService = ApiService() //call the Api Service
 
+    //create the function to get the key
+    private fun getKey(){
+        disposable.add(
+            apiService.getKey()
+                .subscribeOn(Schedulers.newThread()) //do the http stuff on a seperate new thread
+                .observeOn(AndroidSchedulers.mainThread()) //whatever observables you get, put it in main thread
+                .subscribeWith(object: DisposableSingleObserver<apiKey>(){ //subscribe to the disposable
+                    override fun onSuccess(key: apiKey) {
+                        //after the request succeeds, we get the key object
+                        if(key.key.isNullOrEmpty()){
+                            loadErrorObs.value = true
+                            loadingObs.value = false
+                        }else{
+                            //if we have the key
+                            getModelData(key.key)
+                        }
+                    }
+                    override fun onError(e: Throwable) {
+                        //when there is a failure
+                        e.printStackTrace()
+                        loadingObs.value = false
+                        loadErrorObs.value = true
+                    }
+                })
+        )
+
+    }
+
     //create a refresh function
     fun refresh(){
         loadingObs.value = true
-        getModelData() // this function is called in order to get the model
+        getKey()
+        //getModelData() // before we called getModel here without a param when there was no need of a key
     }
 
     //we make this private since we only want it to be used in this class
-    private fun getModelData(){
+    private fun getModelData(key: String){
 
+        //do the same for the other api call with the same convention
         disposable.add(
-            apiService.getResults()
+            apiService.getResults(key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object: DisposableSingleObserver<Data>(){
-                    override fun onSuccess(list: Data) {
+                .subscribeWith(object: DisposableSingleObserver<List<model>>(){
+                    override fun onSuccess(list: List<model>) {
                         loadingObs.value = false
-                        modelListObs.value = list
+                        modelListObs.value = list //the list is now the list value since we got a response
                         loadErrorObs.value = false
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
                         loadErrorObs.value = false
-                        modelListObs.value = null
+                        modelListObs.value = null //set the list to null
                         loadingObs.value = true
                     }
-
                 })
-
             )
 
 

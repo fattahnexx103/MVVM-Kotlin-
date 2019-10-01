@@ -7,18 +7,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiService {
 
-    // https://randomuser.me/api/?results=25
-    private val baseUri = "https://randomuser.me/"
+    private val baseUri = "https://us-central1-apis-4674e.cloudfunctions.net"
 
+    //initialize the client
     private val api = Retrofit.Builder()
-        .baseUrl(baseUri)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) //converts into the Single
+        .baseUrl(baseUri)  //pass in base URL
+        .addConverterFactory(GsonConverterFactory.create()) //this converts the data into GSON data into the class
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) //converts into the Single that we are trying to use
         .build()
         .create(RetrofitApi::class.java)
 
+    fun getKey(): Single<apiKey>{
+        return api.getApiKey()
+    }
 
-    fun getResults(): Single<Data>{
-        return api.getResults(20) //get the results
+    fun getResults(key: String): Single<List<model>>{
+        return api.getResults(key) //get the results
     }
 }

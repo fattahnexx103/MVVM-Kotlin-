@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import apps.android.fattahnexx103.kotlinapp.R
 import apps.android.fattahnexx103.kotlinapp.model.Data
+import apps.android.fattahnexx103.kotlinapp.model.model
 import apps.android.fattahnexx103.kotlinapp.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -22,10 +23,10 @@ class ListFragment : Fragment() {
     private val listAdapter = ItemListAdapter(arrayListOf())
 
     //we need to declare these observable variables for the viewModel to use
-    private val itemListObserver = Observer<Data> { list ->
+    private val itemListObserver = Observer<List<model>> { list ->
         list?.let {
                 recyclerView.visibility = View.VISIBLE //we have data so make the view visible
-                listAdapter.updateItemList(it.results) //and then update the list
+                listAdapter.updateItemList(it) //and then update the list
             }
     }
 
