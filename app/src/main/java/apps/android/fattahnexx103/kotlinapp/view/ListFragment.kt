@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 
 import apps.android.fattahnexx103.kotlinapp.R
-import apps.android.fattahnexx103.kotlinapp.model.model
+import apps.android.fattahnexx103.kotlinapp.model.Data
 import apps.android.fattahnexx103.kotlinapp.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -23,11 +22,11 @@ class ListFragment : Fragment() {
     private val listAdapter = ItemListAdapter(arrayListOf())
 
     //we need to declare these observable variables for the viewModel to use
-    private val itemListObserver = Observer<List<model>>{list ->
-        if(!list.isNullOrEmpty()){
-            recyclerView.visibility = View.VISIBLE //we have data so make the view visible
-            listAdapter.updateItemList(list) //and then update the list
-        }
+    private val itemListObserver = Observer<Data> { list ->
+        list?.let {
+                recyclerView.visibility = View.VISIBLE //we have data so make the view visible
+                listAdapter.updateItemList(it.results) //and then update the list
+            }
     }
 
     private val itemLoadingObserver = Observer<Boolean>{isItemLoaded ->
@@ -76,7 +75,17 @@ class ListFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 2) //2 columns side by side
             adapter = listAdapter //pass in the list adapter that we declated earlier
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            //refresh the viewmodel and information
+            recyclerView.visibility = View.GONE //make the UI gone
+            text_listError.visibility = View.GONE // make the error text gone
+            list_progressBar.visibility = View.VISIBLE //make the progressBar visible
+            listViewModel.refresh() //call the refresh method
+            swipeRefreshLayout.isRefreshing = false //turn off the refresh
+        }
     }
+
 
 
 }

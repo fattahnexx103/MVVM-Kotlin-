@@ -5,17 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import apps.android.fattahnexx103.kotlinapp.R
-import apps.android.fattahnexx103.kotlinapp.model.model
+import apps.android.fattahnexx103.kotlinapp.model.ResultsItem
 import kotlinx.android.synthetic.main.card_layout.view.*
 
 //list adapter extends recyclerView Adapater which takes in the ViewHolder Class
-class ItemListAdapter(val modelList: ArrayList<model>):RecyclerView.Adapter<ItemListAdapter.ItemViewHolder>(){
+class ItemListAdapter(private val modelList: ArrayList<ResultsItem>):RecyclerView.Adapter<ItemListAdapter.ItemViewHolder>(){
 
     // this function takes in a new list
-    fun updateItemList(newItemList: List<model>){
+    fun updateItemList(newItemList: List<ResultsItem>?){
 
         modelList.clear() // clear the existing list
-        modelList.addAll(newItemList) // add all the items of the new list
+        modelList.addAll(newItemList!!) // add all the items of the new list
         notifyDataSetChanged() // data changes
     }
 
@@ -35,7 +35,7 @@ class ItemListAdapter(val modelList: ArrayList<model>):RecyclerView.Adapter<Item
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
 
-        holder.view.cardName.text = modelList[position].name // set the textview to the name of the name property
+        holder.view.cardName.text = modelList[position].name.first // set the textview to the name of the name property
 
     }
 
