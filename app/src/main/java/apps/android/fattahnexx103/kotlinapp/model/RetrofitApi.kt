@@ -19,5 +19,5 @@ interface RetrofitApi {
     //we are making a post request where we are sending in the key
     @FormUrlEncoded //this needs to be called in order to use @Field
     @POST("getAnimals") //endpoint is getAnimals
-    fun getResults(@Field("key") key: String): Single<List<model>> //we get the results which is a List of the model and we pass in the key
+    fun getResults(@Field("key") key: String): Single<List<model>> //we get the results which is a List of the Model and we pass in the key
 }

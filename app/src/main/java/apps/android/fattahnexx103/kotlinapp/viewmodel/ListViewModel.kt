@@ -1,11 +1,8 @@
 package apps.android.fattahnexx103.kotlinapp.viewmodel
 
 import android.app.Application
-import android.graphics.ColorSpace
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import apps.android.fattahnexx103.kotlinapp.model.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -91,15 +88,15 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
 
 //        //we create 6 dummy models just to test out the application
-//        val dummyModel1 = model("Name 1", "Description 1")
-//        val dummyModel2 = model("Name 2", "Description 2")
-//        val dummyModel3 = model("Name 3", "Description 3")
-//        val dummyModel4 = model("Name 4", "Description 4")
-//        val dummyModel5 = model("Name 5", "Description 5")
-//        val dummyModel6 = model("Name 6", "Description 6")
+//        val dummyModel1 = Model("Name 1", "Description 1")
+//        val dummyModel2 = Model("Name 2", "Description 2")
+//        val dummyModel3 = Model("Name 3", "Description 3")
+//        val dummyModel4 = Model("Name 4", "Description 4")
+//        val dummyModel5 = Model("Name 5", "Description 5")
+//        val dummyModel6 = Model("Name 6", "Description 6")
 //
 //        //now we have to add them to an arrayList
-//        val dummyModelList : ArrayList<model> = ArrayList<model>()
+//        val dummyModelList : ArrayList<Model> = ArrayList<Model>()
 //        dummyModelList.add(dummyModel1)
 //        dummyModelList.add(dummyModel2)
 //        dummyModelList.add(dummyModel3)
@@ -108,7 +105,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 //        dummyModelList.add(dummyModel6)
 
         //alternatively we could have done
-        // val list: ArrayList<model> = arrayListof(dummyModel1, dummyModel2, ....)
+        // val list: ArrayList<Model> = arrayListof(dummyModel1, dummyModel2, ....)
 
         //add the list to the observable
 //        modelListObs.value = dummyModelList

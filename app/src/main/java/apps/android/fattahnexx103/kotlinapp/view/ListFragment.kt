@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 
 import apps.android.fattahnexx103.kotlinapp.R
-import apps.android.fattahnexx103.kotlinapp.model.Data
 import apps.android.fattahnexx103.kotlinapp.model.model
 import apps.android.fattahnexx103.kotlinapp.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -62,8 +61,8 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //instantiate view model
-        listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java) //the viewmodel providers contain the view model classes
+        //instantiate view Model
+        listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java) //the viewmodel providers contain the view Model classes
 
         //we create three observer functions on the three variables we have
         listViewModel.modelListObs.observe(this, itemListObserver)
